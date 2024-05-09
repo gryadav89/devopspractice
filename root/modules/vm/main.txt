@@ -1,0 +1,52 @@
+resource "azurerm_network_interface" "myvm_eth" {
+name = var.vm_eth_name
+location = var.region_name
+resource_group_name = var.rg_name
+depends_on = [azurerm_public_ip.mypubip]
+
+ip_configuration {
+name = var.vm_eth_name
+subnet_id = var.sub_id
+private_ip_address_allocation = "Dynamic"
+public_ip_address_id = azurerm_public_ip.mypubip.id
+}
+}
+
+resource "azurerm_virtual_machine" "myvm" {
+name = var.vm_name
+location = var.region_name
+resource_group_name = var.rg_name
+network_interface_ids = [azurerm_network_interface.myvm_eth.id]
+vm_size = var.vm_size
+
+storage_image_reference {
+publisher = "OpenLogic"
+offer = "CentOS"
+version = "latest"
+sku = "7.5"
+}
+
+storage_os_disk {
+name = "${var.vm_name}-disk1"
+caching = "ReadWrite"
+create_option = "FromImage"
+managed_disk_type = "Standard_LRS"
+}
+
+os_profile {
+computer_name  = "var.vm_name"
+admin_username = "dvsadmin"
+admin_password = "Lakshmidevi@24"
+}
+
+os_profile_linux_config {
+    disable_password_authentication = false
+}
+}
+
+resource "azurerm_public_ip" "mypubip" {
+  name                = var.mypubip_name
+  resource_group_name = var.rg_name
+  location            = var.region_name
+  allocation_method   = "Static"
+}

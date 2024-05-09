@@ -1,0 +1,34 @@
+variable "myrg_name" {
+default = "dvscompany-app1-rg"
+}
+
+variable "region_name" {
+default = "east us"
+}
+
+module "rg" {
+source = "/root/modules/rg"
+rg_name = var.myrg_name
+region_name = var.region_name
+}
+
+module "myvnet" {
+source ="/root/modules/vnet"
+rg_name = var.myrg_name
+region_name = var.region_name
+vnet_name = "dvscompany-app2-vnet2"
+vnet_cidr = ["192.168.0.0/24"]
+vnet_sub_name = "dvscompany-app2-vnet2-sub2"
+vnet_sub_cidr = ["192.168.10.0/32"]
+}
+
+module "myvm" {
+source = "/root/modules/vm"
+rg_name = var.myrg_name
+region_name = var.region_name
+sub_id = module.myvnet.vnet_sub_id
+vm_eth_name = "vscompany-vm1-eth1"
+vm_name = "vm9"
+vm_size = "Standard_B1s"
+mypubip_name = "dvscompany-vm1"
+}

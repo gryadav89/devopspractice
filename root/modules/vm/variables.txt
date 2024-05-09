@@ -1,0 +1,7 @@
+variable "rg_name" {}
+variable "region_name" {}
+variable "sub_id" {}
+variable "vm_eth_name" {}
+variable "vm_name" {}
+variable "vm_size" {}
+variable "mypubip_name" {}

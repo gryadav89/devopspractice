@@ -1,0 +1,6 @@
+variable "rg_name" {}
+variable "region_name" {}
+variable "vnet_name" {}
+variable "vnet_cidr" {}
+variable "vnet_sub_name" {}
+variable "vnet_sub_cidr" {}

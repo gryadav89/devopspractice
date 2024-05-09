@@ -1,0 +1,13 @@
+resource "azurerm_virtual_network" "myvnet" {
+name = var.vnet_name
+location = var.region_name
+resource_group_name = var.rg_name
+address_space = var.vnet_cidr
+}
+
+resource "azurerm_subnet" "mysub1" {
+name = var.vnet_sub_name
+resource_group_name = var.rg_name
+virtual_network_name = azurerm_virtual_network.myvnet.name
+address_prefixes = var.vnet_sub_cidr
+}
